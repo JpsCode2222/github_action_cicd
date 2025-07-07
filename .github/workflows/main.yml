@@ -1,0 +1,17 @@
+name: Deploy and Build
+
+on:
+    push:
+      branches:
+          - main
+
+jobs:
+    build:
+        name: Build Start
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+        
+
+
