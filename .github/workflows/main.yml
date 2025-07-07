@@ -10,8 +10,15 @@ jobs:
         name: Build Start
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
-        
+          - name: Checkout repository
+            uses: actions/checkout@v4
+          - name: Set up java
+            uses: actions/setup-java@v4
+            with:
+              java-version: '17'
+              distribution: 'temurin'
 
-
+          - name: Build
+            run: |
+                mvn clean
+                mvn -B package --file pom.xml
