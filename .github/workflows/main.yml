@@ -30,6 +30,9 @@ jobs:
             with:
               name: jar-file
               path: target/*.jar
+           - name: Set Timestamp
+             id: timestamp
+             run: echo "ts=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
 
           - name: Build Docker Image
             uses: docker/build-push-action@v3
@@ -37,7 +40,7 @@ jobs:
               context: .
               file: Dockerfile
               push: false
-              tags: ${{ secrets.DOCKER_HUB_USERNAME }}/CICD:$(date +%Y%m%d%H%M%S)
+              tags: ${{ secrets.DOCKER_HUB_USERNAME }}/CICD:${{ steps.timestamp.outputs.ts }} 
           
           - name: Login to Docker Hub
             uses: docker/login-action@v3
@@ -51,5 +54,5 @@ jobs:
               context: .
               file: Dockerfile
               push: true
-              tags: ${{ secrets.DOCKER_HUB_USERNAME }}/CICD:$(date +%Y%m%d%H%M%S)
+              tags: ${{ secrets.DOCKER_HUB_USERNAME }}/CICD:${{ steps.timestamp.outputs.ts }}
                 
