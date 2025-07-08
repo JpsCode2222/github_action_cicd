@@ -17,6 +17,8 @@ jobs:
             with:
               java-version: '17'
               distribution: 'temurin'
+          - name: Testing Start
+            run: mvn -B test --file pom.xml
 
           - name: Build
             run: |
