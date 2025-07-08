@@ -17,26 +17,20 @@ jobs:
             with:
               java-version: '17'
               distribution: 'temurin'
+          - name: Testing Start
+            run: mvn -B test --file pom.xml
+
           - name: Build
             run: |
                 mvn clean
                 mvn -B package --file pom.xml
 
-    Test:
-        name: Test Start
-        runs-on: ubuntu-latest
-        needs: build
-        steps:
-          - name: Testing Start
-            run: mvn -B test --file pom.xml
+          - name: Upload JAR file
+            uses: actions/upload-artifact@v4
+            with:
+              name: jar-file
+              path: target/*.jar
 
-          
-
-    deploy:
-        name: Deploy Start
-        runs-on: ubuntu-latest
-        needs: Test
-        steps:
           - name: Build Docker Image
             uses: docker/build-push-action@v4
             with:
