@@ -17,13 +17,19 @@ jobs:
             with:
               java-version: '17'
               distribution: 'temurin'
-          - name: Testing Start
-            run: mvn -B test --file pom.xml
+          - name: Cache Maven packages
+            uses: actions/cache@v4
+            with:
+              path: ~/.m2
+              key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+              restore-keys: |
+                ${{ runner.os }}-maven
+                
+          - name: Run Tests
+            run: mvn -B test
 
-          - name: Build
-            run: |
-                mvn clean
-                mvn -B package --file pom.xml
+          - name: Build Package
+            run: mvn -B clean package
 
           - name: Upload JAR file
             uses: actions/upload-artifact@v4
